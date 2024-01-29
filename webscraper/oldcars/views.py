@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 def index(request):
 
     for p in range(1, 5):
-        print(p)
+        print(f"page number - {p}")
 
         url = f'https://auto.ria.com/uk/car/used/?page={p}'
 
@@ -25,19 +25,24 @@ def index(request):
             car_card = requests.get(car_link)
             car_soup = BeautifulSoup(car_card.text, 'lxml')
 
-            car_number = car_soup.find('main', class_='auto-content').find('div', class_='t-check').findAll('span')
-            car_vin = car_soup.find('main', class_='auto-content').find('div', class_='t-check').findAll('span')
+            car_number = car_soup.find('main', class_='auto-content').find('span', class_='state-num')
 
-            if len(car_number) > 1:
-                car_number = car_number[0].text
+            if car_number != None:
+                car_number = car_number.text[:11]
             else:
                 car_number = None
 
-            if len(car_vin) > 1:
-                car_vin = car_vin[-1].text
-            else:
-                car_vin = car_vin[0].text
 
+            if car_soup.find('main', class_='auto-content').find('span', class_='label-vin') == None:
+                car_vin = car_soup.find('main', class_='auto-content').find('span', class_='vin-code')
+
+            if car_soup.find('main', class_='auto-content').find('span', class_='vin-code') == None:
+                car_vin = car_soup.find('main', class_='auto-content').find('span', class_='label-vin')
+
+            if car_vin != None:
+                car_vin = car_vin.text
+            else:
+                car_vin = None
 
 
             car_data = {
@@ -62,7 +67,7 @@ def index(request):
             to_db = Car(url = car_info[0][1], title = car_info[1][1], price_usd = car_info[2][1], otometer = car_info[3][1], username = car_info[4][1], phone_number = car_info[5][1],
                     image_url = car_info[6][1], images_count = car_info[7][1], car_number = car_info[8][1], car_vin = car_info[9][1])
             
-
+            
             current_url = car_info[0][1]
 
             if Car.objects.filter(url=current_url).exists():
@@ -70,7 +75,6 @@ def index(request):
             else:
                 to_db.save()
 
-        print(cars_obj)  
         data = {
             'cars': cars_obj
         }

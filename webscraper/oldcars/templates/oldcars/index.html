@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for car in cars %}
+
+    {% comment %} <p>{{ car.url }}</p> {% endcomment %}
+    <p>{{ car.title }}</p>
+    {% comment %} <p>{{ car.price_usd }}</p>
+    <p>{{ car.odometer }}</p>
+    <p>{{ car.username }}</p>
+    <p>{{ car.image_url.url }}</p>
+    <p>{{ car.images_count }}</p>
+    <p>{{ car.car_number }}</p>
+    <p>{{ car.car_vin }}</p> {% endcomment %}
+
+{% endfor %}
+
+{% endblock content %}

@@ -1,12 +1,16 @@
-1. Для запуску docker-compose: якщо знаходимося в корні проекту 
+1. Для встановлення залежностей:
+- cd webscraper
+- pip install -r requirements.txt
+
+2. Для запуску docker-compose: якщо знаходимося в корні проекту 
 - cd webscraper/postgres
 - docker-compose up
 
-2. Для виконання міграцій пишемо в консолі: якщо знаходимося в корні проекту
+3. Для виконання міграцій пишемо в консолі: якщо знаходимося в корні проекту
 - cd webscraper
 - python manage.py migrate
 
-3. Для запуску додатка:
+4. Для запуску додатка:
 - python manage.py runserver
 
 Додаткова інформація:
